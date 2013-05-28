@@ -325,7 +325,7 @@
 
     function handleRoutes(e)
     {
-        if (e != null && e.originalEvent && e.originalEvent.state)
+        if (e != null && e.originalEvent && e.originalEvent.state !== undefined)
         {
             checkRoutes();
         }
