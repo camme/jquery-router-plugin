@@ -36,6 +36,24 @@ Example:
 	// http://www.foo.com/#!items/mycoolitem.
 	// If a route has been set that matches it, it will be triggered.
 	$.router.go("/items/mycoolitem", "My cool item");
+
+### How to check if a route is defined
+You can check if an url is defined into the router. Useful to differentiate between links to other websites from the internal ones.
+
+$.router.checkURL("/some_url")
+
+Example:
+
+    // This will enable all but external links in a page to be managed through the router
+    $('a').click(function(e) {
+      var url;
+      url = $(this).attr('href');
+      if ($.router.checkRoute(url)) {
+        $.router.go(url);
+        e.preventDefault();
+        return false;
+      }
+    });
 	
 ### Reseting all routes
 
