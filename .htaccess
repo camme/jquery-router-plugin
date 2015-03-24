@@ -1,0 +1,2 @@
+RewriteEngine On
+RewriteRule ^v / [R=307,L]
