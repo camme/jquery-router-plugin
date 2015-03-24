@@ -47,8 +47,7 @@
     // reset all routes
     router.reset = function()
     {
-        var router = {};
-        var routeList = [];
+        routeList = [];
         router.currentId = "";
         router.currentParameters = {};
     }
