@@ -12,7 +12,7 @@ $.router.add(*route*, *[id]*, *callback*);
 Example:
 
 	// Adds a route for /items/:item and calls the callback when matched
-	$.router.add(/items/:item", function(data) {
+	$.router.add('/items/:item', function(data) {
 		console.log(data.item);
 	});
 
@@ -20,7 +20,7 @@ or
 
 	// Adds a route for /items/:item and calls the callback when matched, but also has
 	// a reference to the routes id in $.router.currentId
-	$.router.add(/items/:item", "foo", function(data) {
+	$.router.add('/items/:item', 'foo', function(data) {
 		console.log(data.item);
 	});
 
@@ -35,7 +35,7 @@ Example:
 	// "My cool item" without reloading the page. If using hashes instead, it will use the url
 	// http://www.foo.com/#!items/mycoolitem.
 	// If a route has been set that matches it, it will be triggered.
-	$.router.go("/items/mycoolitem", "My cool item");
+	$.router.go('/items/mycoolitem', 'My cool item');
 	
 ### Reseting all routes
 
