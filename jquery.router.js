@@ -33,10 +33,14 @@
     var eventAdded = false;
     var currentUsedUrl = location.href; //used for ie to hold the current url
     var firstRoute = true;
+    var errorCallback = function () {};
     
     // hold the latest route that was activated
     router.currentId = "";
     router.currentParameters = {};
+    
+    // Create a default error handler
+    router.errorCallback = errorCallback;
     
     router.capabilities = {
         hash: hasHashState,
@@ -91,6 +95,11 @@
         {
             bindStateEvents();
         }
+    };
+    
+    router.addErrorHandler = function (callback)
+    {
+        this.errorCallback = callback;
     };
     
     function bindStateEvents()
@@ -314,6 +323,12 @@
 
         // check if something is catched
         var actionList = getParameters(currentUrl);
+        
+        // If no routes have been matched
+        if (actionList.length == 0) {
+            // Invoke error handler
+            return router.errorCallback(currentUrl);
+        }
         
         // ietrate trough result (but it will only kick in one)
         for(var i = 0, ii = actionList.length; i < ii; i++)

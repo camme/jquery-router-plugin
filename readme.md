@@ -41,7 +41,18 @@ Example:
 
 If you need to remove all routes (which is good when testing) you just call:
 
-$.router.reset();
+`$.router.reset();`
+
+### Dealing with 404's
+
+If a url is entered which doesn't fire a route callback (a.k.a. 404 Not Found) you can add your error callback to take that case and make it beautiful.
+
+```js
+$.router.addErrorHandler(function (url) {
+	// url is the URL which the router couldn't find a callback for
+	console.log(url);
+});
+```
 
 ## License 
 
