@@ -51,11 +51,10 @@
     // reset all routes
     router.reset = function()
     {
-        var router = {};
-        var routeList = [];
+        routeList = [];
         router.currentId = "";
         router.currentParameters = {};
-    }
+    };
  
     router.add = function(route, id, callback)
     {
@@ -63,7 +62,7 @@
         if (typeof id == "function")
         {
             callback = id;
-            delete id;
+            id = null;
         }
         
         var isRegExp = typeof route == "object";
@@ -86,7 +85,7 @@
             callback: callback,
             type: isRegExp ? "regexp" : "string",
             id: id
-        }
+        };
 
         routeList.push(routeItem);
         
@@ -211,7 +210,7 @@
         var list = getParameters(currentUrl);
         
         // if the list is empty, return an empty object
-        if (list.length == 0)
+        if (0 === list.length)
         {
             router.currentParameters = {};
         }
@@ -223,7 +222,7 @@
         }
         
         return router.currentParameters;
-    }
+    };
     
     function getParameters(url)
     {
@@ -242,13 +241,13 @@
                 var result = url.match(route.route);
                 if (result)
                 {
-                    var data = {};
-                    data.matches = result;
-                    
                     dataList.push(
                         {
                             route: route,
-                            data: data
+                            data:
+                            {
+                                matches: result
+                            }
                         }
                     );
                     
@@ -340,7 +339,7 @@
 
     function handleRoutes(e)
     {
-        if (e != null && e.originalEvent && e.originalEvent.state !== undefined)
+        if (e && e.originalEvent && e.originalEvent.state !== undefined)
         {
             checkRoutes();
         }
@@ -364,7 +363,7 @@
     {
         if (window.console && window.console.warn)
         {
-            console.warn("jQuery.status already defined. Something is using the same name.");
+            console.warn("jQuery.router already defined. Something is using the same name.");
         }
     }
         

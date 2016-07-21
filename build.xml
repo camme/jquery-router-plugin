@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jquery.router.js" default="default">
+
+	<property name="bower" value="node_modules/.bin/bower" />
+	<property name="runner" value="node_modules/.bin/node-qunit-phantomjs" />
+	<property name="tools.dir" value="tools" />
+	<property name="jscover" value="${tools.dir}/JSCover-all.jar" />
+	<property name="jscover.dir" value="build/jscover" />
+
+	<target name="default" depends="dependencies" description="description">
+		<delete dir="${jscover.dir}" />
+		<antcall target="JSCover-start" />
+		<exec executable="${runner}">
+			<arg value="http://localhost:8081/index.html" />
+		</exec>
+		<antcall target="JSCover-stop" />
+	</target>
+
+	<target name="JSCover-start">
+		<mkdir dir="${jscover.dir}" />
+		<java jar="${jscover}" fork="true" spawn="true">
+			<arg value="-ws" />
+			<arg value="--document-root=." />
+			<arg value="--report-dir=${jscover.dir}" />
+			<arg value="--no-instrument=qunit/" />
+			<arg value="--no-instrument=node_modules/" />
+			<arg value="--no-instrument=bower_components/" />
+			<arg value="--include-unloaded-js" />
+			<arg value="--port=8081" />
+			<arg value="--log=FINEST" />
+		</java>
+		<waitfor maxwait="5" maxwaitunit="second" checkevery="250" checkeveryunit="millisecond" timeoutproperty="failed">
+			<http url="http://localhost:8081/jscoverage.html" />
+		</waitfor>
+		<fail if="failed" />
+	</target>
+
+	<target name="JSCover-stop">
+		<get src="http://localhost:8081/stop" dest="${jscover.dir}/stop.txt" />
+	</target>
+
+	<target name="detect">
+		<available file="${runner}" property="phantomjs.runner.installed" />
+		<available file="${jscover}" property="jscover.installed" />
+		<available file="${bower}" property="bower.installed" />
+		<available file="bower_components/jquery/dist/jquery.js" property="jquery.installed" />
+		<available file="bower_components/qunit/qunit/qunit.js" property="qunit.installed" />
+	</target>
+
+	<target name="install-bower" depends="detect" unless="bower.installed">
+		<exec executable="npm">
+			<arg value="install" />
+			<arg value="bower" />
+		</exec>
+	</target>
+
+	<target name="install-jquery" depends="detect,install-bower" unless="jquery.installed">
+		<exec executable="${bower}">
+			<arg value="install" />
+			<arg value="jquery" />
+		</exec>
+	</target>
+
+	<target name="install-qunit" depends="detect,install-bower" unless="qunit.installed">
+		<exec executable="${bower}">
+			<arg value="install" />
+			<arg value="qunit" />
+		</exec>
+	</target>
+
+	<target name="install-jscover" depends="detect" unless="jscover.installed">
+		<mkdir dir="${tools.dir}" />
+		<get src="https://drone.io/github.com/tntim96/JSCover/files/target/dist/JSCover-all.jar" dest="${jscover}" usetimestamp="true" />
+	</target>
+
+	<target name="install-node-qunit-phantomjs" depends="detect" unless="phantomjs.runner.installed">
+		<exec executable="npm">
+			<arg value="install" />
+			<arg value="node-qunit-phantomjs" />
+		</exec>
+	</target>
+
+	<target name="dependencies" depends="install-node-qunit-phantomjs,install-jscover,install-bower,install-jquery,install-qunit" />
+</project>
