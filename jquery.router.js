@@ -77,8 +77,7 @@
                 route = route.substring(0, route.length - 1);
             }
             
-            // if the routes where created with an absolute url ,we have to remove the absolut part anyway, since we cant change that much
-            route = route.replace(location.protocol + "//", "").replace(location.hostname, "");
+            route = cleanUrl(route);
         }
 
         var routeItem = {
@@ -96,6 +95,20 @@
             bindStateEvents();
         }
     };
+
+    function cleanUrl(url)
+    {
+        // since we cannot change the protocol or the server, we have to remove those parts as follows:
+
+        // handles the following cases:
+        // http://foo/foo -> /foo (absolute url)
+        // //foo/foo      -> /foo (protocol relative url)
+        // /foo           -> /foo (server relative url)
+        // foo            -> foo  (path relative url)
+
+        var pattern = "^(" + location.protocol + ")?//" + location.hostname;
+        return url.replace(new RegExp(pattern, "i"), "");
+    }
     
     router.addErrorHandler = function (callback)
     {
@@ -158,8 +171,8 @@
         else
         {
             // remove part of url that we dont use
-            url = url.replace(location.protocol + "//", "").replace(location.hostname, "");
-            var hash = url.replace(location.pathname, "");
+            url = cleanUrl(url);
+            var hash = url.replace(new RegExp("^" + location.pathname), "");
             
             if (hash.indexOf("!") < 0)
             {
@@ -230,8 +243,6 @@
 
         var dataList = [];
         
-       // console.log("ROUTES:");
-
         for(var i = 0, ii = routeList.length; i < ii; i++)
         {
             var route = routeList[i];
@@ -266,13 +277,10 @@
                 var currentUrlParts = url.split("/");
                 var routeParts = route.route.split("/");
                 
-                //console.log("matchCounter ", matchCounter, url, route.route)
-
                 // first check so that they have the same amount of elements at least
                 if (routeParts.length == currentUrlParts.length)
                 {
                     var data = {};
-                    var matched = true;
                     var matchCounter = 0;
 
                     for(var j = 0, jj = routeParts.length; j < jj; j++)
@@ -364,7 +372,7 @@
     {
         if (window.console && window.console.warn)
         {
-            console.warn("jQuery.status already defined. Something is using the same name.");
+            console.warn("jQuery.router already defined. Something is using the same name.");
         }
     }
         
