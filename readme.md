@@ -36,6 +36,8 @@ Example:
 	// http://www.foo.com/#!items/mycoolitem.
 	// If a route has been set that matches it, it will be triggered.
 	$.router.go('/items/mycoolitem', 'My cool item');
+	// If you want replace state, add true in third parameter
+	$.router.go('/items/mycoolitem', 'My cool item', true);
 	
 ### Reseting all routes
 

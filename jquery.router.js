@@ -148,11 +148,15 @@
     
     bindStateEvents();
     
-    router.go = function(url, title)
+    router.go = function(url, title, isReplace)
     {   
         if (hasPushState)
         {
-            history.pushState({}, title, url);
+            if(isReplace){
+                history.replaceState({}, title, url);
+            } else { 
+                history.pushState({}, title, url);
+            }
             checkRoutes();
         }
         else
