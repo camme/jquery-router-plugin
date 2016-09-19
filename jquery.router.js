@@ -229,6 +229,9 @@
         return router.currentParameters;
     }
     
+    // add get Parameters to public method
+    router.getParameters = getParameters;
+
     function getParameters(url)
     {
 
