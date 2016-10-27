@@ -326,7 +326,7 @@
     
     function checkRoutes()
     {
-        var currentUrl = parseUrl(location.pathname);
+        var currentUrl = parseUrl(location.pathname + location.hash);
 
         // check if something is catched
         var actionList = getParameters(currentUrl);
