@@ -148,11 +148,15 @@
     
     bindStateEvents();
     
-    router.go = function(url, title)
+    router.go = function(url, title, isReplace)
     {   
         if (hasPushState)
         {
-            history.pushState({}, title, url);
+            if(isReplace){
+                history.replaceState({}, title, url);
+            } else { 
+                history.pushState({}, title, url);
+            }
             checkRoutes();
         }
         else
@@ -225,6 +229,9 @@
         return router.currentParameters;
     }
     
+    // add get Parameters to public method
+    router.getParameters = getParameters;
+
     function getParameters(url)
     {
 
@@ -319,7 +326,7 @@
     
     function checkRoutes()
     {
-        var currentUrl = parseUrl(location.pathname);
+        var currentUrl = parseUrl(location.pathname + location.hash);
 
         // check if something is catched
         var actionList = getParameters(currentUrl);
