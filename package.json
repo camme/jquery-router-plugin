@@ -1,0 +1,19 @@
+{
+  "name": "jquery-router-plugin",
+  "version": "1.0.0",
+  "description": "This plugin handles routes for both hash and push state.",
+  "main": "jquery.router.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dihar/jquery-router-plugin.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dihar/jquery-router-plugin/issues"
+  },
+  "homepage": "https://github.com/dihar/jquery-router-plugin#readme"
+}
